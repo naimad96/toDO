@@ -25,8 +25,9 @@ function updateDisplay(task) {
     var taskToDo = document.createElement('li');
     taskToDo.setAttribute('class', 'd-block list-group-item  w-100');
     listTask.appendChild(taskToDo);
-    taskToDo.textContent = task;
-
+    var text = document.createElement('h1');
+    taskToDo.appendChild(text);
+    text.textContent = task;
     listTask.insertBefore(taskToDo, listTask.childNodes[0]);
     //deleteBtn
     var deleteBtn = document.createElement('button');
@@ -76,7 +77,6 @@ function completeTask(btn, task) {
     btn.onclick = function () {
         if (btn.textContent === "Complete") {
             var completed =[];
-            
             task.classList.add("bg-success");
             btn.textContent = "Uncomplete";
             window.localStorage.setItem("Completed", completed);
