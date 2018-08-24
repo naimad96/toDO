@@ -1,9 +1,12 @@
 var loadBtn = document.getElementById('Load');
+var completedBtn = document.getElementById('Show')
 var clearBtn = document.getElementById('clear');
 var addBtn = document.querySelector('button');
 var input = document.querySelector('input');
 var listTask = document.querySelector('ul');
 var savedTasks = [];
+var completed =[];
+var edited = [];
 //adding tasks 
 function addTask(task) {
     if(input.value ===""){
@@ -47,7 +50,7 @@ function updateDisplay(task) {
     //function call
     deleteTask(deleteBtn, taskToDo);
     completeTask(completeBtn,taskToDo);
-    editTask(editBtn,taskToDo);
+    editTask(editBtn,taskToDo,text);
     //input
     input.focus();
     input.value = '';
@@ -75,33 +78,51 @@ function deleteTask(btn, task) {
 }
 function completeTask(btn, task) {
     btn.onclick = function () {
-        if (btn.textContent === "Complete") {
-            var completed =[];
-            task.classList.add("bg-success");
-            btn.textContent = "Uncomplete";
-            window.localStorage.setItem("Completed", completed);
-        } else {
-            task.classList.remove("bg-success");
-            btn.textContent = "Complete";
-            window.localStorage.removeItem("Completed");
-        }
+        task.classList.add("bg-success");
+        btn.textContent = "Uncomplete";
+        completed.push(task.textContent);
+        window.localStorage.setItem("Completed", completed);
     }
 }
-function editTask(btn,task){
+function showCompleted(){
+    completed = JSON.parse(window.localStorage.getItem('Tasks'));
+    if(completed){
+        //udpate Tasks on screen
+        for (var i = 0; completed.length > i; i++) {
+        updateDisplay(completed[i].todo);
+        }
+    }else{
+        alert('There is no task completed');
+        completed = [];
+    }
+}
+
+
+function editTask(btn,task,text){
     btn.onclick = function(){
-        task.textContent[0] = 'Hello';
-/*
+        var inp = document.createElement('input');
+        inp.setAttribute('class','form-control form-control-lg w-100');
         if(btn.textContent === "Edit"){
-            Inp.setAttribute('class','form-control form-control-lg');
+            task.appendChild(inp);
+            inp.value = text.textContent;
+            task.replaceChild(inp,text);
             btn.textContent = "Save"
         }else if (btn.textContent === "Save"){
+            text.textContent = task.childNodes[0].value;
+            task.replaceChild(text,task.childNodes[0]);
             btn.textContent = "Edit";
+            edited.push(text.textContent);
+            updateLocalSotrage();
         } 
-    */}
+    }
+}
+function updateLocalSotrage(){
+    window.localStorage.setItem('Edited', JSON.stringify(edited));
 }
 function clearLocalStorage() {
-    window.localStorage.clear();
+    window.localStorage.removeItem('Tasks');
 }
 addBtn.addEventListener('click', addTask);
 loadBtn.addEventListener('click', loadTask);
 clearBtn.addEventListener('click', clearLocalStorage);
+completedBtn.addEventListener('click', showCompleted);
