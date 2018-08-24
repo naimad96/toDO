@@ -1,0 +1,17 @@
+btn{
+   margin-top: 10px;
+}
+.list-group{
+    margin-top: 20px;
+}
+
+.btn-primary{
+    margin-top: 10px;
+}
+.hide{
+    display: none;
+}
+
+.btn-info,.btn-danger{
+    margin-right: 10px;
+}
